@@ -27,9 +27,6 @@ public:
         int el = *max_element(nums.begin() ,nums.end()); 
         vector<vector<int>>dp(nums.size()+2 , vector<int>(nums.size()+2 ,-1));
         int ans = solve(nums , 0 , -1 , dp);
-        if(ans == 0)
-            return 1;
-
         return ans;
     }
 };
