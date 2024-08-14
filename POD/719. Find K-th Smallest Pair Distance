@@ -1,0 +1,54 @@
+class Solution {
+public:
+
+    // brute Force - Give TLE - time - O(n2 + nlogn)
+    int smallestDistancePair(vector<int>&nums , k){
+        vector<int>distance;
+        for(int i = 0; i<nums.size(); i++){
+            for(int j = i+1 , j<nums.size(); j++){
+                distance.push_back(abs(nums[i] - nums[j]));
+            }
+        }
+        sort(distnace.begin() , distance.end());
+        return distance[k-1];
+    }
+        // brute Force - Give TLE - time - O(n2 + logk)
+        int smallestDistancePair(vector<int>&nums , k){
+        priority_queue<int>maxHeap;
+        for(int i = 0; i<nums.size(); i++){
+            for(int j = i+1 , j<nums.size(); j++){
+                maxHeap.push(abs(nums[i] - nums[j]));
+                if(maxHeap.size() > k){
+                    maxHeap.pop();
+                }
+            }
+        }
+        return maxHeap.top();
+    }
+
+    //accepted time = O(n2 + maxEl)
+    int smallestDistancePair(vector<int>& nums, int k) {
+        int maxEl = *max_element(nums.begin() , nums.end());
+        vector<int>distance(maxEl+1 , 0);
+
+        for(int i = 0; i<nums.size(); i++){
+            for(int j = i+1; j<nums.size(); j++){
+                distance[(abs(nums[i] - nums[j]))]++;
+            }
+        }
+        
+        int sum = 0;
+        for(int i = 0; i<distance.size(); i++){
+            if(distance[i] == -1){
+                continue;
+            }
+            else{
+                sum = sum + distance[i];
+                if(sum >= k){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+};
