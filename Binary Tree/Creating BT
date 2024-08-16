@@ -39,6 +39,7 @@ void preOrder(Node *root){
   preOrder(root->right);
 }
 
+// inorder ,preorder and postorder are DFS requre a stack if we not use a recursion
 void inOrder(Node *root){
   if(root == NULL){
     return;
@@ -59,8 +60,8 @@ void postOrder(Node *root){
   cout<<root->data<<" ";
 }
 
-
-void levelOrderTraversal(Node *root){
+// level Order Traversal or BFS require a queue
+void levelordertraversal(Node *root){
   queue<Node*>q;
   q.push(root);
   q.push(NULL);
