@@ -1,0 +1,37 @@
+Note - this problem is just a variation of Longest incressing subsequence
+
+uning top down - dp
+
+class Solution {
+public:
+
+    // logic shoud be same as LIS nothing needs to be change
+    int solve(vector<vector<int>>&pairs , int curr , int i , vector<vector<int>>&dp){
+        if(i >= pairs.size()){
+            return 0;
+        }
+
+        if(dp[i][curr + 1] != -1){
+            return dp[i][curr + 1];
+        }
+
+        // take
+        int take = 0;
+        if(curr == -1 || pairs[curr][1] < pairs[i][0]){
+            take = 1 + solve(pairs , i , i+1 ,dp);
+        }
+        int skip = solve(pairs , curr , i+1 ,dp);
+
+        return dp[i][curr + 1] = max(take ,skip);
+    }
+
+    int findLongestChain(vector<vector<int>>& pairs) {
+        // here i sort the vector of vector based on this first value
+        sort(pairs.begin() , pairs.end() ,[](vector<int>&a , vector<int>&b){
+            return a[0] < b[0];
+        });
+        int n = pairs.size();
+        vector<vector<int>>dp(n+2 , vector<int>(n+2 , -1));
+        return solve(pairs , -1 , 0 , dp);
+    }
+};
