@@ -1,0 +1,53 @@
+class Solution {
+public:
+    // function is used to check occurence order of char
+    bool checkOrder(string &prev , string &next){
+        int n = prev.size();
+        int m = next.size();
+        int i = 0;
+        int j = 0;
+
+        while(i < n && j < m){
+            if(prev[i] == next[j]){
+                i++;
+            }
+            j++;
+        }
+
+        if(i >= n){
+            return true;
+        }
+        return false;
+
+    }
+    // same code of LIS require little bit change
+    int solve(vector<string>&word , int i , int prev , vector<vector<int>>&dp){
+        if(i >= word.size()){
+            return 0;
+        }
+
+        if(dp[i][prev+1] != -1){
+            return dp[i][prev+1] ;
+        }
+
+        int take = 0;
+        // here is changging are required becouse we need to check occurence of char order
+        if(prev == -1 || word[i].size() == word[prev].size()+1 && checkOrder(word[prev] , word[i])){
+            take = 1 + solve(word ,i+1 ,i ,dp);
+        }
+
+        int skip = solve(word ,i+1 , prev ,dp);
+
+        return dp[i][prev+1] = max(take , skip);
+    }
+
+    int longestStrChain(vector<string>& words) {
+        sort(words.begin() , words.end() , [](string &a , string&b){
+            return a.size() < b.size();
+        });
+
+        vector<vector<int>>dp(words.size() + 2 , vector<int>(words.size()+2 , -1));
+
+        return solve(words , 0 , -1 , dp);
+    }
+};
