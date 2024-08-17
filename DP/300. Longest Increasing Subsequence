@@ -1,32 +1,56 @@
 class Solution {
 public:
 
-    int solve(vector<int>&nums , int i , int val ,vector<vector<int>>&dp){
-        if(i >= nums.size()){
-            return 0;
-        }
-        // here we use val+1 becouse we intialize val = -1 that is not a any valid index
-        if(dp[i][val+1] != -1){
-            return dp[i][val+1];
-        }
+    // int solve(vector<int>&nums , int i , int val ,vector<vector<int>>&dp){
+    //     if(i >= nums.size()){
+    //         return 0;
+    //     }
+    //     // here we use val+1 becouse we intialize val = -1 that is not a any valid index
+    //     if(dp[i][val+1] != -1){
+    //         return dp[i][val+1];
+    //     }
 
-        int take = 0;
-        int skip = 0;
-        //take wala case
-        if(val == -1 || nums[i] > nums[val]){
-            // if we take a element i that case we pass that value index to the function
-            take = 1 + solve(nums , i+1 , i ,dp);
-        }
-        skip = solve(nums , i+1 , val ,dp);
+    //     int take = 0;
+    //     int skip = 0;
+    //     //take wala case
+    //     if(val == -1 || nums[i] > nums[val]){
+    //         // if we take a element i that case we pass that value index to the function
+    //         take = 1 + solve(nums , i+1 , i ,dp);
+    //     }
+    //     skip = solve(nums , i+1 , val ,dp);
         
-        // here we store the result in dp
-        return dp[i][val+1] =  max(take , skip);
+    //     // here we store the result in dp
+    //     return dp[i][val+1] =  max(take , skip);
+    // }
+
+    int solveUsingBottomUp(vector<int>&nums){
+        int n = nums.size();
+        // all element in vector initialize with 1 becouse minimum 1 length ka subsequence to
+        // banega he
+        vector<int>dp(n , 1);
+
+        int maxLIS = 1;
+
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<i; j++){
+
+                if(nums[i] > nums[j]){
+
+                    dp[i] = max(dp[i] , dp[j] + 1);
+
+                    maxLIS = max(dp[i] , maxLIS);
+                }
+            }
+        }
+        return maxLIS;
     }
 
     int lengthOfLIS(vector<int>& nums) {
-        int el = *max_element(nums.begin() ,nums.end()); 
-        vector<vector<int>>dp(nums.size()+2 , vector<int>(nums.size()+2 ,-1));
-        int ans = solve(nums , 0 , -1 , dp);
-        return ans;
+        // int el = *max_element(nums.begin() ,nums.end()); 
+        // vector<vector<int>>dp(nums.size()+2 , vector<int>(nums.size()+2 ,-1));
+        // int ans = solve(nums , 0 , -1 , dp);
+        // return ans;
+
+        return solveUsingBottomUp(nums);
     }
 };
