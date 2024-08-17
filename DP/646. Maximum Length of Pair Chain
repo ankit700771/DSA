@@ -2,10 +2,7 @@ Note - this problem is just a variation of Longest incressing subsequence
 
 uning top down - dp
 
-class Solution {
-public:
-
-    // using topdown
+ // using topdown
     // int solve(vector<vector<int>>&pairs , int curr , int i , vector<vector<int>>&dp){
     //     if(i >= pairs.size()){
     //         return 0;
@@ -46,9 +43,7 @@ public:
     }
 
     int findLongestChain(vector<vector<int>>& pairs) {
-        sort(pairs.begin() , pairs.end() ,[](vector<int>&a , vector<int>&b){
-            return a[0] < b[0];
-        });
+        sort(pairs.begin() , pairs.end());
         // int n = pairs.size();
         // vector<vector<int>>dp(n+2 , vector<int>(n+2 , -1));
         return solveUsingBottomUp(pairs);
