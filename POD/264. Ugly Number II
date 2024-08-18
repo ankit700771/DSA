@@ -1,0 +1,77 @@
+// this using recursive approch give TLE time complexity - O(nlonn)
+
+class Solution {
+public:
+
+    bool isUgly(int n){
+        if(n == 1){
+            return true;
+        }
+
+        //check number is divisible by 2 or not
+        bool first = true;
+        bool second = true;
+        bool three = true;
+        if(n % 2 == 0){
+            first = isUgly(n /2);
+        }
+        else if(n % 3 == 0){
+            second = isUgly(n / 3);
+        }
+        else if(n % 5 == 0){
+            three = isUgly(n / 5);
+        }
+        else{
+            return false;
+        }
+
+        return first && second && three;
+    }
+
+    int nthUglyNumber(int n) {
+        int count = 0;
+        int i = 1;
+        while(count != n){
+            if(isUgly(i)){
+                count++;
+            }
+            i++;
+        }
+        return i - 1;
+    }
+};
+
+
+// this accepted requre to watch video link - https://www.youtube.com/watch?v=jRacRh6x4go
+
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int>dp(n+1);
+        //first ugly number is 1
+        dp[1] = 1;
+
+        int i2 = 1;
+        int i3 = 1;
+        int i5 = 1;
+
+        for(int i = 2; i<=n; i++){
+            int i2UglyNum = dp[i2]*2;
+            int i3UglyNum = dp[i3]*3;
+            int i5UglyNum = dp[i5]*5;
+            int nextUglyNum = min({i2UglyNum , i3UglyNum ,i5UglyNum});
+            dp[i] = nextUglyNum;
+
+            if(nextUglyNum == i2UglyNum){
+                i2++;
+            }
+            if(nextUglyNum == i3UglyNum) {
+                i3++;
+            }
+            if(nextUglyNum == i5UglyNum){
+                i5++;
+            }
+        }
+        return dp[n];
+    }
+};
