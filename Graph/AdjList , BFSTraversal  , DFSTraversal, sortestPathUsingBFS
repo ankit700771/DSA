@@ -25,6 +25,29 @@ class graph{
       }
     }
 
+    void DFSTraversal(int src ,unordered_map<int , bool>&visited){
+      visited[src] = true;
+      cout<<src<<" ";
+
+      for(auto nbr : adjList[src]){
+        if(!visited[nbr.first]){
+          visited[nbr.first] = true;
+          DFSTraversal(nbr.first , visited);
+        }
+      }
+    }
+
+    void topologicalSort(int src , unordered_map<int , bool>&visited , stack<int>&s){
+      visited[src] = true;
+      for(auto nbr : adjList[src]){
+        if(!visited[nbr.first]){
+          visited[nbr.first] = true;
+          DFSTraversal(nbr.first , visited);
+        }
+      }
+      s.push(src);
+    }
+
     void BFSTraversal(int src){
       unordered_map<int , bool>visited;
       queue<int>q;
@@ -85,6 +108,7 @@ class graph{
 int main(){
   int src = 0;
   int dist = 5;
+  unordered_map<int , bool>visited;
   graph g;
   g.addEdge(0 ,1 ,1 , 0);
   g.addEdge(1 ,4 ,1 , 0);
@@ -95,11 +119,17 @@ int main(){
   g.addEdge(3 ,6 ,1 , 0);
   g.addEdge(6 ,5 ,1 , 0);
 
+
+
   cout<<"Printing adj list : "<<endl;
   g.printingAdjList();
 
   cout<<"Printing BFS Traversal : "<<endl;
   g.BFSTraversal(src);
+
+  
+  cout<<endl<<"DFS Traversal : "<<endl;
+  g.DFSTraversal(src , visited);
 
   cout<<endl<<"Sortest Path using BFS from src -> "<<src<<" to destination -> "<<dist<<endl;
   g.sortestPathUsingBFS(src ,dist);
