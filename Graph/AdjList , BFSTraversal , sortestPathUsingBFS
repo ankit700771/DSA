@@ -1,0 +1,106 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class graph{
+  public:
+    unordered_map<int , vector<pair<int , int>>>adjList;
+
+    void addEdge(int u , int v ,int wt ,bool direction){
+      // 1 ==> directed Graph
+      // 0 == undirected Graph
+
+      adjList[u].push_back({v , wt});
+      if(direction == 0){
+        adjList[v].push_back({u , wt});
+      }
+    }
+
+    void printingAdjList(){
+      for(auto i : adjList){
+        cout<<i.first<<" --> ";
+        for(auto j : i.second){
+          cout<<"( "<<j.first<<","<<j.second<<" )";
+        }
+        cout<<endl;
+      }
+    }
+
+    void BFSTraversal(int src){
+      unordered_map<int , bool>visited;
+      queue<int>q;
+      q.push(src);
+      visited[src] = true;
+
+      while(!q.empty()){
+        int fNode = q.front();
+        cout<<fNode<<" ";
+        q.pop();
+
+        for(auto nbr : adjList[fNode]){
+          if(!visited[nbr.first]){
+            q.push(nbr.first);
+            visited[nbr.first] = true;
+          }
+        }
+      }
+    }
+
+    void sortestPathUsingBFS(int src , int dist){
+      unordered_map<int ,bool>visited;
+      unordered_map<int ,int>parent;
+      queue<int>q;
+
+      q.push(src);
+      visited[src] = true;
+      parent[src] = -1;
+
+      while(!q.empty()){
+        int fNode = q.front();
+        q.pop();
+
+        for(auto nbr : adjList[fNode]){
+          if(!visited[nbr.first]){
+            q.push(nbr.first);
+            visited[nbr.first] = true;
+            parent[nbr.first] = fNode;
+          }
+        }
+      }
+
+      vector<int>ans;
+      ans.push_back(dist);
+      while(parent[dist] != -1){
+        ans.push_back(parent[dist]);
+        dist = parent[dist];
+      }
+
+      reverse(ans.begin() , ans.end());
+      for(auto i : ans){
+        cout<<i<<" ";
+      }
+      cout<<endl;
+    }
+};
+
+int main(){
+  int src = 0;
+  int dist = 5;
+  graph g;
+  g.addEdge(0 ,1 ,1 , 0);
+  g.addEdge(1 ,4 ,1 , 0);
+  g.addEdge(4 ,5 ,1 , 0);
+  g.addEdge(0 ,2 ,1 , 0);
+  g.addEdge(2 ,5 ,1 , 0);
+  g.addEdge(0 ,3 ,1 , 0);
+  g.addEdge(3 ,6 ,1 , 0);
+  g.addEdge(6 ,5 ,1 , 0);
+
+  cout<<"Printing adj list : "<<endl;
+  g.printingAdjList();
+
+  cout<<"Printing BFS Traversal : "<<endl;
+  g.BFSTraversal(src);
+
+  cout<<endl<<"Sortest Path using BFS from src -> "<<src<<" to destination -> "<<dist<<endl;
+  g.sortestPathUsingBFS(src ,dist);
+}
