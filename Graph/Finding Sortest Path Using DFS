@@ -1,0 +1,103 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+  public:
+    unordered_map<int , vector<pair<int ,int>>>adjList;
+
+    void addEdges(int u , int v ,int wt , int direction){
+      // if direction 1 ==> means the graph is undirected
+      // if direction 0 ==> means graph is directed
+      adjList[u].push_back({v ,wt});
+
+      if(direction == 1){
+        adjList[v].push_back({u ,wt});
+      }
+
+    }
+
+    void printAdjList(){
+      for(auto i : adjList){
+        cout<<i.first<<" --> ";
+        for(auto j : i.second){
+          cout<<"("<<j.first<<","<<j.second<<")";
+        }
+        cout<<endl;
+      }
+    }
+
+    void DFSTraversal(int src , unordered_map<int , bool>&visited){
+      visited[src] = true;
+      cout<<src<<" ";
+      for(auto nbr : adjList[src]){
+        if(!visited[nbr.first]){
+          DFSTraversal(nbr.first , visited);
+        }
+      }
+    }
+
+    void topoSort(int src , unordered_map<int , bool>&visited1 , stack<int>&s){
+      visited1[src] = true;
+      for(auto nbr : adjList[src]){
+        if(!visited1[nbr.first]){
+          topoSort(nbr.first , visited1 ,s);
+        }
+      }
+      s.push(src);
+    }
+
+    void sortestPath(stack<int>s ,int n){
+      vector<int>distance(n , INT_MAX);
+      int src = s.top();
+      s.pop();
+      distance[src] = 0;
+
+      for(auto nbr : adjList[src]){
+        if(nbr.second + distance[src] < distance[nbr.first]){
+          distance[nbr.first] = nbr.second + distance[src];
+        }
+      }
+
+      while(!s.empty()){
+        int src = s.top();
+        s.pop();
+
+        if(distance[src] != INT_MAX){
+          for(auto nbr : adjList[src]){
+            if(nbr.second + distance[src] < distance[nbr.first]){
+              distance[nbr.first] = nbr.second + distance[src];
+            }
+          }
+        }
+      }
+
+      for(auto i : distance){
+        cout<<i<<" ";
+      }
+    }
+};
+
+int main(){
+  Graph g;
+  g.addEdges(0 ,1,5 ,0);
+  g.addEdges(1 ,3,3 ,0);
+  g.addEdges(0 ,2,3 ,0);
+  g.addEdges(2 ,1,2 ,0);
+  g.addEdges(2 ,4,6 ,0);
+  g.addEdges(2 ,3,5 ,0);
+  g.addEdges(4 ,1,1 ,0);
+
+  cout<<"printing Adj list : "<<endl;
+  g.printAdjList();
+
+  unordered_map<int ,bool>visited;
+  g.DFSTraversal(0 , visited);
+
+  unordered_map<int , bool>visitedContainer;
+  stack<int>s;
+  g.topoSort(0 , visitedContainer , s);
+
+  cout<<endl<<"Finding sortest Path : "<<endl;
+  g.sortestPath(s ,5);  
+
+}
