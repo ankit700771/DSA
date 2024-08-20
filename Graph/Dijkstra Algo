@@ -1,0 +1,91 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+  public : 
+
+    unordered_map<int , vector<pair<int ,int>>>adjList;
+
+    void addEdge(int u , int v , int wt , int isDirected){
+      // isDirected = 1 means graph is directed graph
+      // isDirected = 0 means graph is undirected graph
+      adjList[u].push_back({v , wt});
+      if(isDirected == 0){
+        adjList[v].push_back({u , wt});
+      }
+
+    }
+
+    void PrintAdjList(){
+      for(auto i : adjList){
+        cout<<i.first<<" --> ";
+        for(auto j : i.second){
+          cout<<"("<<j.first<<","<<j.second<<")";
+        }
+        cout<<endl;
+      }
+    }
+
+    void Dijkstra(int src , int n){
+
+      //store the distance of all node to src node
+      vector<int>distance(n , INT_MAX);
+
+      // we need to pick minimum weight edge from current node to all its ngr that's
+      //why we choose set here we also use minheap for that
+      set<pair<int ,int>>st;
+      //set 1 part is distenace
+      // set 2 part is node
+      st.insert({0 , src});
+      distance[src] = 0;
+      
+      while(!st.empty()){
+        //for finding first node in the set we use st.begin() that return itterator
+        auto firstNode = *(st.begin());
+        // set store pair of values where the first value contain the distance 
+        int NodeDistance = firstNode.first;
+        // second value contain the node
+        int node = firstNode.second;
+        st.erase(st.begin());
+
+        // then we need find all it's nbr
+        for(auto nbr : adjList[node]){
+          // agar nbr satisfy this condition then we need to update the distance vector
+          // and also set value
+          if(NodeDistance + nbr.second < distance[nbr.first]){
+            
+            auto isExist = st.find({distance[nbr.first] , nbr.first});
+
+            if(isExist != st.end()){
+              st.erase(isExist);
+            }
+            distance[nbr.first] = NodeDistance + nbr.second;
+            st.insert({distance[nbr.first] , nbr.first});
+          }
+        }
+      }
+
+      cout<<endl<<"printing  distance : "<<endl;
+      for(auto i:distance ){
+        cout<<i<<" ";
+      }
+    }
+};
+
+int main(){
+  Graph g;
+  g.addEdge(6,3,2,0);
+  g.addEdge(6,1,14,0);
+  g.addEdge(3,1,9,0);
+  g.addEdge(3,2,10,0);
+  g.addEdge(1,2,7,0);
+  g.addEdge(2,4,15,0);
+  g.addEdge(4,3,11,0);
+  g.addEdge(6,5,9,0);
+  g.addEdge(4,5,6,0);
+
+  g.PrintAdjList();
+  int src = 6;
+  int n = 7;
+  g.Dijkstra(src , n);
+}
