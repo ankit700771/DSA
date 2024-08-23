@@ -1,0 +1,37 @@
+class Solution {
+public:
+
+    int solve(vector<int>&prices , int i , bool buy , vector<vector<int>>&dp){
+
+        // base condition is when i out of bound then we dont get any profit so that we return 0 here 
+        if(i >= prices.size()){
+            return 0;
+        }
+
+        if(dp[i][buy] != -1){
+            return dp[i][buy];
+        }
+
+        int profit1 = 0;
+        int profit2 = 0;
+
+        // remamber one thing we do not allowed to sell stock before buy thats why we requre bool variable that keep track of when we buy and when we are allowed to sell
+
+        if(buy){
+            // why we add -prices of i becouse when we calculate profit we do sell - buy means buy are always in negative
+            profit1 = max(-prices[i] + solve(prices , i+1 , 0 ,dp) , solve(prices ,i+1 , 1 ,dp));
+        }
+
+        else{
+            // for the same resion we add prices[i] here
+            profit2 = max(prices[i] + solve(prices ,i+1 , 1 ,dp) , solve(prices , i+1 , 0 ,dp));
+        }
+
+        return dp[i][buy] = max(profit1 , profit2);
+    }
+
+    int maxProfit(vector<int>& prices) {
+        vector<vector<int>>dp(prices.size()+1 , vector<int>(2 , -1));
+        return solve(prices , 0 , 1 ,dp);
+    }
+};
