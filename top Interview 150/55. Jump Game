@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        // intially when we have a index 0 we maximum jump to the nums[0]
+        int maxJump = nums[0];
+        int n = nums.size();
+        for(int i = 1; i<n; i++){
+            // then we check if any case we cross the maxJump value means we never reach to the end
+            if(i > maxJump){
+                return false;
+            }
+            //for each value of i we need to check far we jump 
+            maxJump = max(maxJump , nums[i] + i);
+            
+        }
+        return true;
+    }
+};
