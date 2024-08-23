@@ -1,0 +1,21 @@
+class Solution {
+public:
+    
+    // approch - current i value pe mai sell karne ki kosis karunga or buy mai ab tak ke minimum            elemnt wale din karung
+    int maxProfit(vector<int>& prices) {
+        // when i stand at position 0 then here in the left side we dont have any element and in that 
+        // case we assume only one elemnt in array and same day i buy stocks and same day i sell the 
+        // stocks then over current profit could be 0
+        int mini = prices[0];
+        // that's why here we assign current profit to = 0 and till now over minimum elemnt is                  prices[0]
+        int currentProfit = 0;
+        // now we move from day 1
+        for(int i = 1; i<prices.size(); i++){
+            // and check that current day value is minimum or not
+            mini = min(mini , prices[i]);
+            // compute the profit
+            currentProfit = max(currentProfit , prices[i] - mini);
+        }
+        return currentProfit;
+    }
+};
