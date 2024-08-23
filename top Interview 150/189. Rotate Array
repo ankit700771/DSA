@@ -1,0 +1,44 @@
+class Solution {
+public:
+    // void rotate(vector<int>& nums, int k) {
+    //     int n = nums.size();
+    //     // this solution i used a extra space 
+    //     vector<int>arr(n , 0);
+
+    //     for(int i = 0; i<n; i++){
+    //         // we need to right shift by k means 0 index value are place in 0+k index and if we over index is out of bound then we need to wrap around that why we use MOD here
+    //         int idx = (i + k) % n;
+    //         arr[idx] = nums[i];
+    //     }
+    //     // after that we place all value again in nums becouse question ask that to do it inplace
+    //     for(int i = 0; i<n; i++){
+    //         nums[i] = arr[i];
+    //     }
+    // }
+
+
+    // <<-------------------------------optimal approch ----------------------------------->>
+
+    void reverseArray(vector<int>&nums , int start , int end){
+        while(start < end){
+            swap(nums[start] , nums[end]);
+            start++;
+            end--;
+        }
+    }
+
+    void rotate(vector<int>& nums, int k) {
+        // i am able to comeup with this solution but 
+        int n = nums.size();
+        // i forgot to mod the value of k that's why i am not able to solve this
+        // remamber this pattern <<< ---------- pattern ------------------->>
+        k = k % n;
+
+        reverseArray(nums , 0 , n-k-1);
+        reverseArray(nums , n-k , n-1);
+        reverseArray(nums , 0 ,n-1);
+        
+
+
+    }
+};
