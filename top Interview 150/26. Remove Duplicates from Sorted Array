@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int slider = 0;
+
+        for(int i = 1; i<nums.size(); i++){
+            if(nums[slider] != nums[i]){
+                swap(nums[slider + 1] , nums[i]);
+                slider++;
+            }
+        }
+
+        return slider+1;
+    }
+};
