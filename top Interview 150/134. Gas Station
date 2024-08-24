@@ -1,0 +1,64 @@
+class Solution {
+public:
+
+    // brute force
+    // int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+    //     for(int i = 0; i<gas.size(); i++){
+    //         if(gas[i] < cost[i]){
+    //             continue;
+    //         }
+
+    //         int j = (i + 1) % gas.size();
+    //         int currGas = gas[i] - cost[i] + gas[j];
+
+    //         while(j != i){
+    //             if(cost[j] > currGas){
+    //                 break;
+    //             }
+                
+    //             int costOfcurrGas = cost[j];
+    //             j = (j + 1) % gas.size();
+    //             currGas = currGas - costOfcurrGas + gas[j];
+    //         }
+
+    //         if(j == i){
+    //             return i;
+    //         }
+    //     }
+    //     return -1;
+
+    int findSum(vector<int>nums){
+        int sum = 0;
+
+        for(int i = 0; i<nums.size(); i++){
+            sum += nums[i];
+        }
+        return sum;
+    }
+
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int totalIncome = findSum(gas);
+        int totalKharch = findSum(cost);
+
+        // agar totalImcome se jayda hoga total kharcha then we never get a result
+        if(totalIncome < totalKharch){
+            return -1;
+        }
+
+        //ager total income se kharcha kam hai then we geranty get the ans
+
+        int total = 0;
+        int result = 0;
+
+        for(int i = 0; i<gas.size(); i++){
+            total = total + gas[i] - cost[i];
+            if(total < 0){
+                result = i+1;
+                total = 0;
+            }
+        }
+
+        return result;
+
+    }
+};
