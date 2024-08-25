@@ -42,3 +42,46 @@ public:
         return ans;
     }
 };
+
+// without extra space
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        int maxHeight = height[0];
+        int idx = 0;
+        int maxWater = 0;
+        for(int i = 1; i<n; i++){
+            if(maxHeight < height[i]){
+                maxHeight = height[i];
+                idx = i;
+            }
+        }
+
+        //left part
+        int left = 0;
+        for(int i = 0; i<idx; i++){
+            if(left > height[i]){
+                maxWater += left - height[i]; 
+            }
+            else{
+                left = height[i];
+            }
+        }
+
+        //right part
+        int right = 0;
+        for(int i = n-1; i>idx; i--){
+            if(right > height[i]){
+                maxWater += right - height[i];
+            }
+            else{
+                right = height[i];
+            }
+        }
+
+        return maxWater;
+
+    }
+};
