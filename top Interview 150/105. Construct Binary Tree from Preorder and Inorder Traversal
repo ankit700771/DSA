@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+
+    int findValue(int target ,vector<int>&inorder){
+        for(int i = 0; i<inorder.size(); i++){
+            if(target == inorder[i]){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // why we send idx value as a refrence becouse i want to track preorder value at every case that's why we need to paas idx value as refrence
+    TreeNode *solve(vector<int>&preorder , vector<int>&inorder , int start , int end , int &idx){
+        if(start > end){
+            return NULL;
+        }
+
+        int currRootValue = preorder[idx];
+        // this function used to find the preorder value inside the inorder
+        int i = findValue(currRootValue , inorder);
+        idx++;
+        TreeNode *root = new TreeNode(currRootValue);
+        root->left = solve(preorder , inorder , start , i-1 , idx);
+        root->right = solve(preorder , inorder ,i+1 ,end , idx);
+
+        return root;
+
+    }
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int n = inorder.size();
+        int start = 0;
+        int end = n-1;
+        int idx = 0;
+
+        return solve(preorder , inorder , start ,end , idx);
+    }
+};
