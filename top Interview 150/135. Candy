@@ -1,0 +1,32 @@
+class Solution {
+public:
+    // in this approch we first comapre the candy with left side of children and store the max candy they need after that we traverse the ratings array right to left and compare with right side of candy and then select the maximum
+    int candy(vector<int>& ratings) {
+        int n = ratings.size();
+        vector<int>L2R(n ,1);
+        vector<int>R2L(n ,1);
+
+
+        //first fill L2R
+
+        for(int i = 1; i<n; i++){
+            if(ratings[i] > ratings[i-1]){
+                L2R[i] = L2R[i-1] + 1;
+            }
+        }
+
+        // fill R2L
+
+        for(int i = n-2; i>=0; i--){
+            if(ratings[i] > ratings[i+1]){
+                R2L[i] = R2L[i+1] + 1;
+            }
+        }
+
+        int sum = 0;
+        for(int i = 0; i<n; i++){
+            sum += max(R2L[i] , L2R[i]);
+        }
+        return sum;
+    }
+};
