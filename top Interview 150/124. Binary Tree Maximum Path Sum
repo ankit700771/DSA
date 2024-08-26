@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int maxi;
+    int solve(TreeNode *root){
+        if(root == NULL)
+            return 0;
+        
+        int l = solve(root->left);
+        int r = solve(root->right);
+        
+        // ya wali value show kar rahi hai ki mujhe niche he maximum mil gya isliya isko return nhi karne ki jarurat hai
+        int weGetPathDownWord = l + r + root->val;
+
+        int currRootMaximum = root->val;
+
+        int leftSideOrRightSide = max(l , r) + root->val;
+
+        maxi = max({maxi ,weGetPathDownWord ,currRootMaximum,leftSideOrRightSide}); 
+
+        // return only curr root wali value maximum ho sakti hai ya fir left of right wali value becouse ya dono upar ke side explore hogi isliye inko upar return karna hoga
+        return max(currRootMaximum , leftSideOrRightSide);
+        
+    }
+    
+    int maxPathSum(TreeNode* root) {
+        maxi = INT_MIN;
+        
+        int a = solve(root);
+        
+        return maxi;
+    }
+};
