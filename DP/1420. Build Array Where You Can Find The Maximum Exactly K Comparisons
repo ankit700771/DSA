@@ -1,0 +1,49 @@
+class Solution {
+public:
+
+    // Approch - 
+    //     We need to construct a array in striclly incressing order means when we get a new element whos greater than the maximum_value/ maxSoFar we increment the SearchCost and we want a array whos search cost is equal to k and the array element have only 1 to m possibilty
+    
+    // means for each index we have a choice to chose the  element from 1 to m for thats why we need a loop thats traverse through 1 to m
+
+    int N ,M ,K;
+    int MOD = 1000000007;
+    int solve(int idx , int SearchCost , int maxSoFar , vector<vector<vector<int>>>&dp){
+        if(idx >= N){
+            // when search cost equal to k then we return 1 and we only check this condition 
+            // when we reach the last index of the array
+            if(SearchCost == K){
+                return 1;
+            }
+            // otherwise return 0
+            return 0;
+        }
+
+        if(dp[idx][SearchCost][maxSoFar] != -1){
+            return dp[idx][SearchCost][maxSoFar];
+        }
+
+        int result = 0;
+        // check perfect value of M from 1 to M
+        for(int i = 1; i<=M; i++){
+            if(i > maxSoFar){
+                // if current value is larger than then maxSoFar we increess the SearchCost by 1 and also change the maxSoFar
+                result = (result + solve(idx+1 , SearchCost+1 , i ,dp)) % MOD;
+            }
+            else{
+                // otherwise we just skip that number
+                result = (result + solve(idx+1 , SearchCost , maxSoFar ,dp)) % MOD;
+            }
+        }
+
+        return dp[idx][SearchCost][maxSoFar] = result % MOD;
+    }
+
+    int numOfArrays(int n, int m, int k) {
+        N = n;
+        M = m;
+        K = k;
+        vector<vector<vector<int>>>dp(N+1 , vector<vector<int>>(N+1 , vector<int>(M+1 , -1)));
+        return solve(0 , 0 , 0 , dp);
+    }
+};
