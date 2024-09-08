@@ -1,0 +1,58 @@
+class Solution {
+public:
+
+    /*
+        if d = 2
+        approch of this problem is like we select one element on day one and other on day 2 
+        and find the result
+        or
+        approch of this problem is like we select two element on day one and other on day 2 
+        and find the result
+        or
+        approch of this problem is like we select three element on day one and other on day 2 
+        and find the result
+        ...
+        ...
+        an so on
+
+        and find the minimum of all the possiblity and return it
+    */
+
+    
+    int solve(vector<int>&jobs , int idx , int d , vector<vector<int>>&dp){
+        // if only day 1 is remaining then we have to complete all the tast and return the maximum of it
+        if(d == 1){
+
+            return *max_element(jobs.begin()+idx , jobs.end());
+
+        }
+
+        if(dp[idx][d] != -1){
+            return dp[idx][d];
+        }
+
+        int maxD = INT_MIN;
+        int finalResult = INT_MAX;
+        // this loop help us to select a item
+        // jobs.size() - d --> this we do becouse we need to complete all the task in exactly d days this is importent becouse in question 
+        // mentioned that we have to do at least one task in a day means if you think to complete all the task in single day that is also
+        // wrong becouse of question condition thats why this jobs.size() - d handle this condition
+        for(int i = idx; i<=jobs.size()-d; i++){
+            maxD = max(maxD , jobs[i]);
+
+            int result = maxD + solve(jobs , i+1 , d-1 , dp);
+
+            finalResult = min(finalResult , result);
+            
+        }
+        return dp[idx][d] = finalResult;
+    } 
+
+    int minDifficulty(vector<int>& jobDifficulty, int d) {
+        if(d > jobDifficulty.size()) return -1;
+        int n = jobDifficulty.size();
+        vector<vector<int>>dp(n+1 , vector<int>(d+1 , -1));
+        int res = solve(jobDifficulty ,0 , d , dp);
+        return res;
+    }
+};
