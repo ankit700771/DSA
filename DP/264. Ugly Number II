@@ -1,3 +1,11 @@
+/*
+    Bruteforce approch is start from 1 and check that the number is ugly or not 
+    for checking this condition are check the number is divisible by 2 or 3 or 5
+    we do check this until that number become one if that number become 1 means that number is ugly number and increment the count
+
+    similarly do this step until count == n and return this
+*/
+
 class Solution {
 public:
     int nthUglyNumber(int n) {
