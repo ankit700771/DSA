@@ -1,0 +1,61 @@
+class Solution {
+public:
+    unordered_map<string , int>umap;
+    bool hasDuplicate(string &s1 , string &s2){
+        vector<int>arr(26 , 0);
+
+        for(int i = 0; i<s1.size(); i++){
+            if(arr[s1[i] - 'a'] > 0){
+                return true;
+            }
+
+            arr[s1[i] - 'a']++;
+        }
+
+        for(int i = 0; i<s2.size(); i++){
+            if(arr[s2[i] - 'a'] > 0){
+                return true;
+            }
+            arr[s2[i] -'a']++;
+        }
+        return false;
+    }
+
+    int solve(int i , vector<string>&arr ,string temp , int n){
+        if(i >= n){
+            return temp.size();
+        }
+
+
+        if(umap.find(temp) != umap.end()){
+            return umap[temp];
+        }
+
+        int include = 0;
+        int exclude = 0;
+        //agar string has duplicate the only option is to exclude that string
+        /*
+            if there is no duplicate in the temp and arr[i] in that case we have a two choice either we include
+            or we exclude this is the else case part
+
+            Note - when i try to code my self i forgot or i am not able to understand that s[i] also contain
+            a duplicated value and if they containg in this case we have only one choice to exclude that string
+            and also we need compare both temp and current arr[i] value for checking duplicate
+        */
+        if(hasDuplicate(temp ,arr[i])){
+            exclude = solve(i+1 , arr , temp , n);
+        } else {
+            exclude = solve(i+1 , arr , temp , n);
+            include = solve(i+1 , arr ,temp+arr[i] , n);
+        }
+
+        return umap[temp] = max(include , exclude);
+    }
+
+    int maxLength(vector<string>& arr) {
+        string temp = "";
+        int n = arr.size();
+        umap.clear();
+        return solve(0 , arr , temp , n);
+    }
+};
