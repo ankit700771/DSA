@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int>dp(n+1);
+        dp[1] = 1;
+
+        int primeFactor2 = 1;
+        int primeFactor3 = 1;
+        int primeFactor5 = 1;
+
+        for(int i = 2; i<=n; i++){
+            int result2 = dp[primeFactor2] * 2;
+            int result3 = dp[primeFactor3] * 3;
+            int result5 = dp[primeFactor5] * 5;
+
+            int minimum = min({result2 , result3 , result5});
+
+            dp[i] = minimum;
+
+            if(minimum == result2){
+                primeFactor2++;
+            }
+            if(minimum == result3){
+                primeFactor3++;
+            }
+            if(minimum == result5){
+                primeFactor5++;
+            }
+        }
+        return dp[n];
+    }
+};
