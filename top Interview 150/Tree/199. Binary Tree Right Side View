@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    /*
+        Here we insert the element in vector only when the level of the tree less then or equal to the size of the vector if the size of the vector greater than the level in that case we do not insert the element in the tree
+
+    2) - becouse we want to print the right view of the tree that's why we first go right side then we go left side
+    */
+
+    vector<int>ans;
+    void solve(TreeNode *root , int level) {
+        if(root == NULL) {
+            return;
+        }
+
+        if(ans.size() <= level) {
+            ans.push_back(root->val);
+        }
+
+        solve(root->right , level+1);
+        solve(root->left , level+1);
+    }
+    vector<int> rightSideView(TreeNode* root) {
+        solve(root ,0);
+        return ans;
+    }
+};
