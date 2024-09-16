@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int findMinDifference(vector<string>& timePoints) {
+        int n = timePoints.size();
+        vector<int>minutes(n);
+
+        for(int i = 0; i<n; i++) {
+            string time = timePoints[i];
+
+            string hours = time.substr(0 , 2); // find hours
+            string minute = time.substr(3); // find minutes
+
+            int hoursInt = stoi(hours);
+            int minutesInt = stoi(minute);
+
+            minutes[i] = hoursInt * 60 + minutesInt;
+        }
+
+        sort(minutes.begin() , minutes.end());
+
+
+        int minDiff = INT_MAX;
+        for(int i = 1; i<n; i++) {
+            minDiff = min(minDiff , minutes[i] - minutes[i-1]);
+        }
+
+        /* why this case becouse take this test case ["23:59","00:00"] if we convert this to minutes we get
+            [1439 , 0] and when we shor them then we get => [0 , 1439] and if we find minimun diffrence then we get 1439 but its not right becouse we check clock wise dirction if we check just previus of 12 the we get the diffrence of "23 : 59" - "00 : 00" should be 1 minute for that show we count the first total time in a day and then subtract with maximum minutes value becouse becouse there is chance that maximum diffrence value from clock wise direction give minimum value when we check anti clock wise thats why we check one case here also 
+        */
+        return min(minDiff , (24*60 - minutes[n-1]) + minutes[0]);
+    }
+};
