@@ -1,0 +1,41 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution {
+  public:
+    // Function to detect cycle in a directed graph.
+    
+    bool isCyclicDFS(vector<int> adj[] , vector<bool>&visited , vector<bool>&pathVisited ,int src) {
+        visited[src] = true;
+        pathVisited[src] = true;
+        
+        for(auto v : adj[src]) {
+            if(visited[v] == false && isCyclicDFS(adj , visited , pathVisited , v)) {
+                return true;
+            }
+            else if(pathVisited[v] == true) {
+                return true;
+            }
+        }
+        
+        pathVisited[src] = false;
+        return false;
+    }
+    
+    
+    bool isCyclic(int V, vector<int> adj[]) {
+        // code here
+        vector<bool>visited(V ,false);
+        vector<bool>pathVisited(V , false);
+        
+        for(int i = 0; i<V; i++) {
+            if(!visited[i] && isCyclicDFS(adj , visited , pathVisited , i)){
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
