@@ -1,0 +1,28 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution {
+  public:
+    // Function to return a list containing the DFS traversal of the graph.
+    vector<int>ans;
+    
+    void solve(vector<int> adj[] , vector<bool>&visited , int src) {
+        visited[src] = true;
+        ans.push_back(src);
+        
+        for(auto v : adj[src]) {
+            if(visited[v] != true) {
+                solve(adj , visited ,v);
+            }
+        }
+    }
+    
+    
+    vector<int> dfsOfGraph(int V, vector<int> adj[]) {
+        vector<bool>visited(V , false);
+        solve(adj , visited , 0);
+        return ans;
+    }
+};
