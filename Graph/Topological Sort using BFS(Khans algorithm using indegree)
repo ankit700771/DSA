@@ -1,0 +1,49 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution
+{
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    queue<int>q;
+	    vector<int>indegree(V , 0);
+	    
+	    //step 1 = calculate indgree of each node
+	    for(int i = 0; i<V; i++) {
+	        for(auto v : adj[i]) {
+	            indegree[v]++;
+	        }
+	    }
+	    
+	    // step 2 to push those node who's indegree is 0 inside the queue
+	    
+	    for(int i = 0; i<V; i++) {
+	        if(indegree[i] == 0) {
+	            q.push(i);
+	        }
+	    }
+	    
+	    // step 3 using BFS calcute topological sort
+	    
+	    vector<int>result;
+	    while(!q.empty()) {
+	        int data = q.front();
+	        result.push_back(data);
+	        q.pop();
+	        
+	        for(auto v : adj[data]) {
+	            indegree[v]--;
+	            
+	            if(indegree[v] == 0) {
+	                q.push(v);
+	            }
+	        }
+	    }
+	    
+	    return result;
+	}
+};
