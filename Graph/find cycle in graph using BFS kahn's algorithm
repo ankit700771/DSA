@@ -1,0 +1,57 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution {
+  public:
+    // Function to detect cycle in a directed graph.
+    bool isCyclic(int V, vector<int> adj[]) {
+        // code here
+        
+        // using BFS
+        queue<int>q;
+        int count = 0;
+        vector<int>indegree(V , 0);
+        //step1 find indegree of the graph
+        
+        for(int i = 0; i<V; i++) {
+            for(auto v : adj[i]) {
+                indegree[v]++;
+            }
+        }
+        
+        // step2 = push all the node in queue who's indegree is 0
+        
+        for(int i = 0; i<V; i++) {
+            if(indegree[i] == 0) {
+                count++;
+                q.push(i);
+            }
+        }
+        
+        // step - 3 using BFS find cycle or not
+        
+        while(!q.empty()) {
+            int src = q.front();
+            q.pop();
+            
+            for(auto v : adj[src]) {
+                indegree[v]--;
+                
+                if(indegree[v] == 0) {
+                    count++;
+                    q.push(v);
+                    
+                }
+            }
+        }
+        
+      if(count == V){
+          return false;
+      }
+      else {
+          return true;
+      }
+    }
+};
