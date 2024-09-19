@@ -1,0 +1,39 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution
+{
+	public:
+	//Function to return list containing vertices in Topological order.
+	
+	void DFS(vector<int> adj[] , vector<bool>&visited , vector<int>&topoSort , int src) {
+	    visited[src] = true;
+	    
+	    for(auto v : adj[src]) {
+	        if(!visited[v]) {
+	            DFS(adj , visited , topoSort , v);
+	        }
+	    }
+	    
+	    topoSort.push_back(src);
+	}
+	
+	
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    vector<int>topoSort;
+	    vector<bool>visited(V , false);
+	    
+	    for(int i = 0; i<V; i++) {
+	        if(!visited[i]) {
+	            DFS(adj , visited , topoSort ,i);
+	        }
+	    }
+	    
+	    reverse(topoSort.begin() , topoSort.end());
+	    return topoSort;
+	}
+};
+
