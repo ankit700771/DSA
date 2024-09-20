@@ -2,7 +2,7 @@ class Solution {
 public:
 
     /*
-        Just like to find connected commoponents
+        Just like to find connected commoponents using DFS
     */
 
     // void DFS(unordered_map<int , vector<int>>&adj , vector<bool>&visited , int src) {
@@ -51,5 +51,78 @@ public:
         }
 
         return count;
+    }
+};
+
+
+
+
+class Solution {
+public:
+    int n;
+    /*
+        using BFS
+    */
+
+    // void BFS(unordered_map<int , vector<int>>&adj , vector<bool>&visited , int src) {
+    //     queue<int>q;
+    //     q.push(src);
+    //     visited[src] = true;
+
+    //     while(!q.empty()) {
+    //         int data = q.front();
+    //         q.pop();
+
+    //         for(auto v : adj[data]) {
+    //             if(!visited[v]) {
+    //                 visited[v] = true;
+    //                 q.push(v);
+    //             }
+    //         }
+    //     }
+    // }
+
+    void BFS(vector<vector<int>>& isConnected , vector<bool>&visited , int src) {
+        queue<int>q;
+        q.push(src);
+        visited[src] = true;
+
+        while(!q.empty()) {
+            int data = q.front();
+            q.pop();
+
+            for(auto v = 0; v<n; v++) {
+                if(!visited[v] && isConnected[data][v] == 1) {
+                    visited[v] = true;
+                    q.push(v);
+                }
+            }
+        }
+    }
+
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        n = isConnected.size();
+        // unordered_map<int , vector<int>>adj;
+        vector<bool>visited(n , false);
+        int count = 0;
+
+        // for(int i = 0; i<n; i++) {
+        //     for(int j = 0; j<n; j++) {
+        //         if(isConnected[i][j] == 1) {
+        //             adj[i].push_back(j);
+        //             adj[j].push_back(i);
+        //         }
+        //     }
+        // }
+
+        for(int i = 0; i<n; i++) {
+            if(!visited[i]) {
+                BFS(isConnected , visited , i);
+                count++;
+            }
+        }
+
+        return count;
+
     }
 };
