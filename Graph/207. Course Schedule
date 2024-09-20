@@ -1,0 +1,61 @@
+class Solution {
+public:
+    /*
+        solve using a kahn's algorithm 
+        in this question i need to check a graph contain a cycle or not if that graph 
+        contain a cycle means we can not complete the all course
+        other wise return true
+    */
+
+    int n;
+
+    bool topologicalSort(unordered_map<int , vector<int>>&adj , vector<int>&indegree) {
+        queue<int>q;
+        int count =0;
+        //push all the node who's indegree is 0 inside the queue
+        for(int i = 0; i<n; i++) {
+            if(indegree[i] == 0) {
+                count++;
+                q.push(i);
+            }
+        }
+
+        while(!q.empty()) {
+            int data = q.front();
+            q.pop();
+
+            for(auto v : adj[data]) {
+                indegree[v]--;
+
+                if(indegree[v] == 0) {
+                    q.push(v);
+                    count++;
+                }
+            }
+        }
+
+        if(count == n){
+            return true;
+        }
+        return false;
+    }
+
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        n = numCourses;
+        unordered_map<int , vector<int>>adj;
+        vector<int>indegree(n , 0);
+
+        // creating a graph
+
+        for(auto v : prerequisites) {
+            int a = v[0];
+            int b = v[1];
+
+            // grpgh should be b --> a;
+            adj[b].push_back(a);
+            indegree[a]++;
+        }
+
+        return topologicalSort(adj , indegree);
+    }
+};
