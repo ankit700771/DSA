@@ -1,0 +1,95 @@
+class Solution {
+public:
+
+    /*
+        step 1 -> need to check a graph contain a cycle or not if its contain a cycle means no
+        topological sort exist return empty array
+
+        if graph containa a no cycle means there exist a topological sort means we need to find it
+    */
+
+
+    stack<int>s;
+
+    void DFS(unordered_map<int , vector<int>>&adj , vector<bool>&visited , int src) {
+        visited[src] = true;
+
+        for(auto v : adj[src]) {
+            if(!visited[v]) {
+                DFS(adj , visited , v);
+            }
+        }
+        s.push(src);
+    }
+
+    bool checkCycle(unordered_map<int , vector<int>>&adj , vector<int>&indegree, int n) {
+        queue<int>q;
+        int count = 0;
+        //push all element in queue who's indegree is 0
+        for(int i = 0; i<n; i++) {
+            if(indegree[i] == 0) {
+                q.push(i);
+                count++;
+            }
+        }
+
+        while(!q.empty()) {
+            int data = q.front();
+            q.pop();
+
+            for(auto v : adj[data]) {
+                indegree[v]--;
+
+                if(indegree[v] == 0) {
+                    q.push(v);
+                    count++;
+                }
+            }
+        }
+
+        if(count == n) {
+            //means no cycle
+            return false;
+        }
+        else{
+            return true; // means cycle
+        }
+    }
+
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        unordered_map<int , vector<int>>adj;
+        vector<int>res;
+        int n = numCourses;
+        vector<bool>visited(n , false);
+        vector<int>indegree(n , 0);
+        // making a graph
+        for(auto &v : prerequisites) {
+            int a = v[0];
+            int b = v[1];
+
+            adj[b].push_back(a);
+            indegree[a]++;
+        }
+
+        //check of cycle using BFS
+
+        bool ans = checkCycle(adj , indegree , n);
+        if(ans) {
+            return res;
+        }
+
+        for(int i = 0; i<n; i++) {
+            if(!visited[i]) {
+                DFS(adj , visited , i);
+            }
+        }
+
+        while(!s.empty()) {
+            res.push_back(s.top());
+            s.pop();
+        }
+
+        return res;
+
+    }
+};
