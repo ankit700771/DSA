@@ -1,0 +1,44 @@
+class Solution {
+public:
+    
+    bool checkBipartite(vector<int> adj[] , int curr , vector<int>&color , int currColor) {
+        queue<int>q;
+        q.push(curr);
+        color[curr] = currColor;
+        
+        while(!q.empty()) {
+            int src = q.front();
+            q.pop();
+            
+            for(auto v : adj[src]) {
+                if(color[v] == color[src]) {
+                    return false;
+                }
+                
+                else if(color[v] == -1) {
+                    color[v] = 1 - color[src];
+                    q.push(v);
+                }
+            }
+        }
+        return true;
+    }
+
+	bool isBipartite(int V, vector<int>adj[]){
+	    // this color vector work as visited also
+	    /*
+	        if the color[i] == -1 means till now we can not visited the node i
+	    */
+	    vector<int>color(V , -1);
+	    // red color - 1
+	    // green color - 0
+	    
+	    for(int i = 0; i<V; i++) {
+	        if(color[i] == -1 && checkBipartite(adj , i , color , 1) == false)
+	                return false;
+	    }
+	    return true;
+	}
+
+};
+
