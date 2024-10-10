@@ -1,0 +1,67 @@
+class Solution {
+public:
+    /*
+        this problem just look like a sliding window but i do not understand how we can shrink this window
+    */
+
+    //Brute fource
+    // int maxProduct(vector<int>& nums) {
+    //     int maxProd = INT_MIN;
+
+    //     for(int i = 0; i<nums.size(); i++) {
+    //         int prod = 1;
+    //         for(int j = i; j<nums.size(); j++) {
+    //             prod *= nums[j];
+    //             maxProd = max(maxProd , prod);
+    //         }
+    //     }
+    //     return maxProd;
+    // }
+
+
+    /*
+        Approch -> 
+            1) - in all the number in the array is positive the answer should be multiplication of all the array element
+
+            2) - if the array has an even negative number in that case the answer should be multiplication of all the element inside the array
+
+            3) - if the array contain odd negative nnumber in that case we need to ignore 1 negative number and make its prefix product and suffix product to get an answer
+
+            4) - if there is the zero in that case we need to make a sub array such that no array contain a zero
+
+            for handle 4th case we just need to check if we get the suffix = 0 or prefix = 0 in that case just change the suffix and preffx value to its starting value that is 1
+
+    */
+
+    int maxProduct(vector<int>& nums) {
+        int maxProd = INT_MIN;
+        int prefix = 1;
+
+        //Here we find the prefix product
+        for(int i = 0; i<nums.size(); i++) {
+
+            prefix *= nums[i];
+            maxProd = max(maxProd , prefix);
+            //when we get the zero we set prefix value to its starting value that is 1
+            if(nums[i] == 0) {
+                prefix = 1;
+            }
+        }
+
+        int suffix = 1;
+
+        //here we find the suffix product
+        for(int i = nums.size()-1; i>= 0; --i) {
+            suffix *= nums[i];
+            maxProd = max(maxProd , suffix);
+            
+            
+            //when we get the zero we set prefix value to its starting value that is 1
+            if(nums[i] == 0) {
+                suffix =  1;
+            }
+        }
+
+        return maxProd;
+    }
+};
