@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int largestCombination(vector<int>& candidates) {
+        int maxLen = INT_MIN;
+
+        for(int bitPos = 0; bitPos <= 24; bitPos++) {
+            int count = 0;
+
+            for(auto num : candidates) {
+                // checking set bit at position 0 1 2 ......
+                if(num & 1 << bitPos) {
+                    count++;
+                }
+            }
+
+            maxLen = max(maxLen , count);
+        }
+
+        return maxLen;
+    }
+};
